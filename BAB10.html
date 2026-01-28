@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB10</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB1</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Latihan Kosakata</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .card {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 15px;
+  }
+  button {
+    margin-top: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  .result {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .wrong { color: red; }
+  .correct { color: green; }
+  ol { text-align:left; max-height:400px; overflow:auto; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2 id="question"></h2>
+  <input type="text" id="answerInput" placeholder="Tulis jawaban di sini">
+  <br>
+  <button id="nextBtn">Selanjutnya</button>
+</div>
+
+<script>
+let questions = [
+{ soal: "크다", jawaban: "besar" },
+{ soal: "환불하다", jawaban: "menguangkan kembali" },
+{ soal: "작다", jawaban: "kecil" },
+{ soal: "바지", jawaban: "celana" },
+{ soal: "원", jawaban: "mata uang Korea" },
+{ soal: "들다", jawaban: "mengangkat" },
+{ soal: "싱싱하다", jawaban: "segar, fresh" },
+{ soal: "어지럽다", jawaban: "pusing" },
+{ soal: "화폐", jawaban: "mata uang" },
+{ soal: "종이 가방", jawaban: "tas kertas" },
+{ soal: "상하다", jawaban: "busuk" },
+{ soal: "청소하다", jawaban: "membersihkan" },
+{ soal: "지폐", jawaban: "uang kertas" },
+{ soal: "자동화된", jawaban: "otomatis" },
+{ soal: "많다", jawaban: "banyak" },
+{ soal: "운영하다", jawaban: "mengoperasikan" },
+{ soal: "적다", jawaban: "sedikit" },
+{ soal: "센서", jawaban: "sensor" },
+{ soal: "동전", jawaban: "uang koin" },
+{ soal: "직접", jawaban: "langsung" },
+{ soal: "가볍다", jawaban: "ringan" },
+{ soal: "기술", jawaban: "teknologi" },
+{ soal: "무겁다", jawaban: "berat" },
+{ soal: "매장에서", jawaban: "di toko" },
+{ soal: "싸다", jawaban: "murah, mengepak" },
+{ soal: "앱으로", jawaban: "dengan aplikasi" },
+{ soal: "비싸다", jawaban: "mahal" },
+{ soal: "스캔하다", jawaban: "memindai, scan" },
+{ soal: "길다", jawaban: "panjang" },
+{ soal: "사전 결제", jawaban: "pembayaran dimuka" },
+{ soal: "현금", jawaban: "uang tunai" },
+{ soal: "컵 라면", jawaban: "mie gelas" },
+{ soal: "신용카드", jawaban: "kartu kredit" },
+{ soal: "문구점", jawaban: "toko alat tulis" },
+{ soal: "상품권", jawaban: "voucher belanja" },
+{ soal: "특정", jawaban: "spesifik" },
+{ soal: "값", jawaban: "harga" },
+{ soal: "가격", jawaban: "harga" },
+{ soal: "취급하다", jawaban: "menangani" },
+{ soal: "과일", jawaban: "buah" },
+{ soal: "이외", jawaban: "selain itu" },
+{ soal: "값을 깎다", jawaban: "potongan harga" },
+{ soal: "골프장", jawaban: "lapangan golf" },
+{ soal: "수박", jawaban: "semangka" },
+{ soal: "장점", jawaban: "kelebihan" },
+{ soal: "딸기", jawaban: "strawberi" },
+{ soal: "장벽", jawaban: "hambatan, penghalang" },
+{ soal: "오렌지", jawaban: "jeruk" },
+{ soal: "상자", jawaban: "kotak kardus" },
+{ soal: "언어", jawaban: "bahasa" },
+{ soal: "바꾸다", jawaban: "menukar" },
+{ soal: "넣다", jawaban: "memasukan" },
+{ soal: "교환하다", jawaban: "menukar barang / barter" },
+{ soal: "포장하다", jawaban: "membungkus" },
+{ soal: "계산하다", jawaban: "menghitung" },
+];
+
+// Acak soal
+questions = questions.sort(() => Math.random() - 0.5);
+
+let index = 0;
+let score = 0;
+let userAnswers = [];
+
+const questionEl = document.getElementById("question");
+const answerInput = document.getElementById("answerInput");
+const nextBtn = document.getElementById("nextBtn");
+const card = document.querySelector(".card");
+
+function showQuestion() {
+  questionEl.textContent = "Soal " + (index + 1) + ": " + questions[index].soal;
+  answerInput.value = "";
+  answerInput.focus();
+}
+
+nextBtn.addEventListener("click", () => {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  userAnswers[index] = userAnswer; // simpan jawaban sesuai index
+
+  if (userAnswer === questions[index].jawaban) {
+    score++;
+  }
+
+  index++;
+  if (index < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+});
+
+function showResult() {
+  let answerList = "";
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.jawaban) {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span></li>`;
+    } else {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span><br>
+                     Jawaban kamu: <span class="wrong">${userAnswers[i] || "(kosong)"}</span></li>`;
+    }
+  });
+
+  card.innerHTML = `
+    <h2>Hasil</h2>
+    <p class="result">Nilai: ${score} / ${questions.length}</p>
+    <hr>
+    <p>Kunci Jawaban:</p>
+    <ol>${answerList}</ol>
+  `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
